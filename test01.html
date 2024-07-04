@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles/reset.css">
+    <style>
+        section{
+            height: 100vh;
+        }
+        section:nth-child(2n){
+            background-color: pink;
+        }
+
+        nav{
+            position: fixed;
+            left: 50px;
+            top: 50%;
+            transform: translateX(-50%);
+        }
+
+        nav li.active{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <!-- section*4{section$$} -->
+    <section>section01</section>
+    <section>section02</section>
+    <section>section03</section>
+    <section>section04</section>
+
+    <!-- nav>ul>li*4{menu$$} -->
+    <nav>
+        <ul>
+            <li class="active">menu01</li>
+            <li>menu02</li>
+            <li>menu03</li>
+            <li>menu04</li>
+        </ul>
+    </nav>
+
+    <script src="./script/jquery-3.7.1.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script> -->
+    <script src="./script/mousewheel.js"></script>
+    <script src="./script/jquery.easing.1.3.js"></script>
+    
+    <script>
+        $('section').on('mousewheel', function(event){
+            console.log(event.deltaY); // 아래로 내릴때는 -1, 위로 올릴때는 +1 발생
+            let top ;
+            let index ;
+
+            if(event.deltaY < 0){ // 아래로 내릴 때
+                top = $(this).next().offset().top;
+                // index = $(this).index() + 1;
+                index = $(this).next().index();
+                // console.log("next top: ", top, $(this).index());
+            }else if(event.deltaY > 0){ // 위로 올릴 때
+                top = $(this).prev().offset().top;
+                // console.log("prev top: ", top, $(this).index());
+                index = $(this).prev().index();
+            }
+
+            // css, transition-timming-function
+            // css, animate-timming-function
+            // ease, ease-in, ease-out
+            $('html, body').stop().animate({scrollTop: top}, 400, "easeOutBounce", function(){
+                $('nav li').removeClass('active');
+                $('nav li').eq(index).addClass('active')
+            });
+        });
+
+        // $('section').eq(0).trigger('mousewheel')
+        // 페이지를 로드할 때 마다 항상 맨위로 올려두기 (초기화)
+        $('html, css').animate({scrollTop: 0});
+        $('nav li').eq(0).addClass('active');
+    </script>
+</body>
+</html>

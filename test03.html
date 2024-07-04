@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="log"></div>
+    <!-- <script>
+        // data 사용하기
+        // get, post, delete, patch/put
+        fetch()
+        .then() // Promise(객체모양)
+        .then() // Promise를 풀어서 "사용할 수 있는 상태로 만들기"
+
+
+      {
+        "id": 61219,
+        "url": "https://yts.mx/movies/tigers-on-the-rise-2024",
+        "title": "Tigers on the Rise",
+        "year": 2024,
+        "rating": 0,
+        "runtime": 0,
+        "genres": [
+          "Documentary"
+        ],
+        "summary": "Celebrates the remarkable comeback of one of the world's most iconic animals. Tiger populations have rebounded so successfully, many of the big cats are venturing from India's forest reserves into farms and villages-a monumental challenge for both people and animals. The heroes in this story are the vets, scientists, and community patrols dedicated to ensuring that tigers and people can coexist.",
+        "language": "en",
+        "mpa_rating": "",
+        "background_image": "https://yts.mx/assets/images/movies/tigers_on_the_rise_2024/background.jpg",
+        "background_image_original": "https://yts.mx/assets/images/movies/tigers_on_the_rise_2024/background.jpg",
+        "small_cover_image": "https://yts.mx/assets/images/movies/tigers_on_the_rise_2024/small-cover.jpg",
+        "medium_cover_image": "https://yts.mx/assets/images/movies/tigers_on_the_rise_2024/medium-cover.jpg",
+        "large_cover_image": "https://yts.mx/assets/images/movies/tigers_on_the_rise_2024/large-cover.jpg",
+        },
+    </script> -->
+    <script>
+        let movies = []
+        // get
+        fetch('https://yts.mx/api/v2/list_movies.json') // 이 주소에서 데이터를 가져오세요~
+        .then(res => res.json())
+        .then(res => {
+            const ary = res.data.movies;
+            console.log(ary.length);
+            
+            movies = ary.map( (movie, index) => {
+                const item = { // 조립
+                    id : index,
+                    url : movie.url,
+                    title : movie.title,
+                    year : movie.year,
+                    rating: movie.rating,
+                    runtime: movie.runtime,
+                    genres: movie.genres,
+                    summary: movie.summary,
+                    language: movie.language,
+                    background_image : movie.background_image
+                }
+                return item; // 필요없는 정보는 제외하고 필요한 정보만 가져오는 것
+            })
+            console.log(movies);
+
+            movies.forEach(movie => {
+                const tag = `
+                <div>
+                    <h2> ${movie.title} </h2>
+                </div>
+                `
+
+                // document.querySelector('.log').append(tag) // append로 쓰면 태그 적용이 안된다.
+                document.querySelector('.log').insertAdjacentHTML('beforeBegin',tag);
+                // 요소 밖에
+                // after() : 'afterEnd'    
+                // before() : 'afterBegin' 
+
+                // 요소 안에
+                // append() : 'beforeEnd'
+                // prepend() : 'beforeBegin'
+            })
+        })
+    </script>
+</body>
+</html>
